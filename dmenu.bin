@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Setup the environment variables
+export PATH=/bin:/sbin:$PATH
+export LD_LIBRARY_PATH=/usr/lib:/mnt/vendor/lib
+
+# The boot partition mount point
+BOOT_PARTITION_MOUNT_POINT=/boot
+
+# The partition we wish to boot from
+BOOT_PARTITION=/dev/mmcblk1p1
+
+# The init script we're hoping to execute instead of stock OS
+INIT_FILE=boot/init
+
+# Check for a MicroSD card in the TF2 slot
+if [ -b /dev/mmcblk1p1 ]
+then
+	# Mount the boot partition
+	mkdir $BOOT_PARTITION_MOUNT_POINT
+	mount -t exfat $BOOT_PARTITION $BOOT_PARTITION_MOUNT_POINT
+
+	# The partition contains a init script
+	if [ -f $BOOT_PARTITION_MOUNT_POINT/$INIT_FILE ]
+	then
+		# Run the deviceinfo script (sets necessary, device-specific environment variables)
+		source /mnt/mmc/device-resources/deviceinfo
+
+		# Execute the init script (this one should never return)
+		/bin/bash $BOOT_PARTITION_MOUNT_POINT/$INIT_FILE
+
+		# Sync data to disk
+		sync
+
+		# Power the device off
+		echo o > /proc/sysrq-trigger
+	else
+		# Unmount the boot partition
+		umount $BOOT_PARTITION_MOUNT_POINT
+	fi
+fi
+
+# Start Stock OS
+exec /mnt/vendor/bin/dmenu.bin

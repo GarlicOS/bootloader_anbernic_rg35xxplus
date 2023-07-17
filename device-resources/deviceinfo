@@ -1,0 +1,39 @@
+#!/system/bin/sh
+
+# Device Information
+export DEVICE_MANUFACTURER="Anbernic"
+export DEVICE_MODEL="RG35XX+"
+export DEVICE_NAME="$DEVICE_MANUFACTURER $DEVICE_MODEL"
+export DEVICE_CODENAME=`echo $DEVICE_MODEL | tr "[:upper:]" "[:lower:]"`
+
+# Use the fbcon SDL driver
+export SDL_VIDEODRIVER=fbcon
+
+# Disable the fbcon driver's mouse requirement
+export SDL_NOMOUSE=1
+
+# Tell SDL to blacklist unwanted joysticks
+export SDL_JOYSTICK_DEVICE_BLACKLIST=axp2202-pek:Deeplay-keys
+
+# The location of the brightness control
+export LCD_BRIGHTNESS_PATH=/dev/disp
+
+# The location of the maximum brightness control value or the value itself
+export LCD_BRIGHTNESS_MAXIMUM=255
+
+# The minimum brightness value
+export LCD_BRIGHTNESS_MINIMUM=1
+
+# The battery capacity path
+export BATTERY_CAPACITY_PATH=/sys/class/power_supply/axp2202-battery/capacity
+
+# The charger online path
+export CHARGER_ONLINE_PATH=/sys/class/power_supply/axp2202-usb/online
+
+# # Disable the IO scheduler (it just ends up slowing down the MicroSD cards)
+echo noop > /sys/devices/platform/soc/sdc0/mmc_host/mmc0/mmc0:1234/block/mmcblk0/queue/scheduler
+echo noop > /sys/devices/platform/soc/sdc2/mmc_host/mmc1/mmc1:0001/block/mmcblk1/queue/scheduler
+
+# Disable MicroSD card power-saving (helps reduce load stutter)
+echo on > /sys/devices/platform/soc/sdc0/mmc_host/mmc0/power/control
+echo on > /sys/devices/platform/soc/sdc2/mmc_host/mmc1/power/control
