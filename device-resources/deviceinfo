@@ -12,6 +12,13 @@ export SDL_VIDEODRIVER=fbcon
 # Disable the fbcon driver's mouse requirement
 export SDL_NOMOUSE=1
 
+# RG28XX is just a RG35XX+ with a different LCD panel
+if grep -q "RG28xx" /mnt/vendor/oem/board.ini
+then
+	# Which we need to rotate by 270°
+	export SDL_VIDEO_FBCON_ROTATION=CCW
+fi
+
 # Tell SDL to blacklist unwanted joysticks
 export SDL_JOYSTICK_DEVICE_BLACKLIST=axp2202-pek:Deeplay-keys
 
