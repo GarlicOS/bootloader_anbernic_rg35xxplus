@@ -1,5 +1,3 @@
-#!/system/bin/sh
-
 # Device Information
 export DEVICE_MANUFACTURER="Anbernic"
 export DEVICE_MODEL="RG35XX+"
