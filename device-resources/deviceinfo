@@ -45,7 +45,7 @@ export RETROARCH_DEFAULT_MENU_BACKEND=ozone
 # Scale the RetroArch UI up to counteract the panel's fake DPI report
 export RETROARCH_DEFAULT_MENU_SCALE_FACTOR=2.0
 
-# # Disable the IO scheduler (it just ends up slowing down the MicroSD cards)
+# Disable the IO scheduler (it just ends up slowing down the MicroSD cards)
 echo noop > /sys/devices/platform/soc/sdc0/mmc_host/mmc0/mmc0:1234/block/mmcblk0/queue/scheduler
 echo noop > /sys/devices/platform/soc/sdc2/mmc_host/mmc1/mmc1:0001/block/mmcblk1/queue/scheduler
 
