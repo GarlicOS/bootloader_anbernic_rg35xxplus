@@ -15,6 +15,7 @@ if grep -q "RG28xx" /mnt/vendor/oem/board.ini
 then
 	# Which we need to rotate by 270°
 	export SDL_VIDEO_FBCON_ROTATION=CCW
+	export RETROARCH_DEFAULT_VIDEO_ROTATION=1
 fi
 
 # Tell SDL to blacklist unwanted joysticks
